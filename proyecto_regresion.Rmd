@@ -1,0 +1,783 @@
+---
+title: "Regresión Avanzada Proyecto Final"
+author: "Dante Ruiz"
+date: "11/24/2018"
+output: 
+  pdf_document:
+    fig_caption: yes
+    number_sections: true
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setWD}
+setwd("~/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05 Proyecto Final")
+```
+
+```{r librerias,message=FALSE, warning=FALSE}
+
+# Cargamos librerias
+library(R2jags)
+library(tidyverse)
+library(gridExtra)
+library(xtable)
+
+```
+
+```{r funciones_aux}
+
+# Probabilidad
+prob<-function(x){
+  out<-min(length(x[x>0])/length(x),length(x[x<0])/length(x))
+  out
+}
+
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+plot_RegvsWTI<-function(x.name,out.yp,pos_leg){
+  
+  col_reg<-match(x.name,colnames(datos_train))
+  x<-unlist(datos_train[,col_reg])
+  y<-datos_train$WTI
+
+  
+  ymin<-min(y,out.yp[,c(1,3,7)])
+  ymax<-max(y,out.yp[,c(1,3,7)])
+  xmin<-min(x)
+  xmax<-max(x)
+  
+  plot(x,y,type="p",pch=16,col="grey50",ylim=c(ymin,ymax),
+     main=paste(x.name," vs WTI"),xlab=x.name,ylab='WTI')
+  
+  points(x,out.yp[,1],col='firebrick1',pch=16,cex=0.8)
+  
+  segments(x,out.yp[,3],x,out.yp[,7],col=2)
+
+  legend(pos_leg,legend=c('Observado','Ajustado'),pch=16,col=c('grey50','firebrick1'))
+}
+
+plot_tsWTI<-function(out.yp,out.yf,pos_leg){
+  
+  xmin<-1
+  xmax<-n+m
+  ymin<-min(c(datos$WTI,out.yp[,1],out.yf[,1]))
+  ymax<-max(c(datos$WTI,out.yp[,1],out.yf[,1]))
+  
+  plot(1:(n+m),datos$WTI,type="l",lwd=2,col="grey80",xaxt='n',ylim=c(ymin,ymax),xlim=c(xmin,xmax),xlab='',ylab='WTI')
+  lines(1:(n+m),c(out.yp[,1],out.yf[1,1],rep(NA,m-1)),lty=2,col='firebrick1')
+  lines(1:(n+m),c(rep(NA,n-1),out.yp[n,1],out.yf[,1]),lty=1,lwd=2,col='royalblue1')
+  axis(1,at=1:(n+m),labels=Fecha,hadj=0.5)
+  legend(pos_leg,legend=c('Observado','Ajustado','Pronosticado'),lty=c(1,2,1),lwd=c(2,1,2),col=c('grey50','firebrick1','royalblue1'))
+}
+
+
+plot_beta<-function(out.beta){
+  
+  plotfun<-function (x){
+  
+  ymin<-min(out_dinam.beta[,c(x,3,7)])
+  ymax<-max(out_dinam.beta[,c(x,3,7)])
+  xmin<-1
+  xmax<-n
+  
+  plot(out.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax),xlim=c(xmin,xmax),lty=1,lwd=2,col='firebrick1')
+  lines(out.beta[seq(x,n,k),3],lty=2,lwd=2,col='gray50')
+  lines(out.beta[seq(x,n,k),7],lty=2,lwd=2,col='gray50')
+  }  
+  plotfun
+}
+
+```
+
+# Introducción
+
+## Problema
+
+## Objetivo
+
+## Hipótesis
+
+
+# Datos
+
+## Descripción de los datos
+
+Variable:	Unidades
+WTI:	dólares por barril 
+JPM_Dollar_Index:	unidades
+VIX_Index:	unidades
+OPEP_TOTPROD:	millones de barriles por día
+OPEP_TOTDEM:	millones de barriles por dia
+TBILL_10YR:	porciento
+TBILL_1YR:	porciento
+
+```{r LimpiezaDatos,warning=FALSE, message=FALSE}
+source('01_Clean_Data_Petroleo.R')
+```
+
+## Análisis exploratorio de los datos
+
+```{r}
+datos_1
+```
+
+```{r}
+# Seleccioanmos el set de datos a usar
+datos<-datos_1
+
+# Extraemos las fechas 
+Fecha<-datos$Fecha
+
+# Eliminamos la fecha de los datos 
+datos <- select(datos, -Fecha)
+
+# Grafiamos los datos. 
+plot(ts(datos, start = c(2000,1), frequency = 12))
+```
+
+
+```{r}
+cor(datos)
+```
+
+```{r Train_y_Test}
+#-Dividing data-
+datos_train <- datos[1:222,]
+datos_test <- datos[223:225,]
+
+# No. obs predicción
+n <- nrow(datos_train)
+
+# No. obs pronosticos
+m <- nrow(datos_test)
+
+# No. regresores
+k<- 6
+```
+
+# MRLMN
+
+PENDIENTE.... 
+
+\clearpage
+# GLM Estático
+```{r GLM_Estatico,message=FALSE, warning=FALSE, eval=TRUE, include=FALSE}
+
+source('Modelo_Estatico.R')
+
+```
+
+```{r Resumen_GLM_Estatico,results='asis'}
+
+#Tabla resumen
+out_estat.sum.t_tabla<-xtable(out_estat.sum.t,
+                              caption='Coeficientes Estimados para el Modelo Estático',
+                              label='tabla:coef_mod_estat')
+
+align(out_estat.sum.t_tabla)<-'l|rrrrrr'
+
+print(out_estat.sum.t_tabla,comment=FALSE,caption.placement = 'top')
+
+```
+
+```{r DIC_GLM_Estatico}
+
+#Imprimir DIC
+print(out_estat.dic)
+
+```
+
+```{r PlotRegresores_Estatico,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Estático'}
+
+#Predictions
+par(mfrow=c(3,2))
+
+
+# JPM_Dollar_Index vs. WTI
+plot_RegvsWTI(x.name='JPM_Dollar_Index',out.yp=out_estat.yp,pos_leg='topleft')
+
+# VIX_Index vs. WTI
+plot_RegvsWTI(x.name='VIX_Index',out.yp=out_estat.yp,pos_leg='topleft')
+
+# OPEP_TOTPROD vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTPROD',out.yp=out_estat.yp,pos_leg='topleft')
+
+# OPEP_TOTDEM vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTDEM',out.yp=out_estat.yp,pos_leg='topleft')
+
+# TBILL_10YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_10YR',out.yp=out_estat.yp,pos_leg='topright')
+
+# TBILL_1YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_1YR',out.yp=out_estat.yp,pos_leg='topright')
+
+```
+
+```{r tsWTI_Estatico}
+#t vs y
+par(mfrow=c(1,1))
+plot_tsWTI(out.yp=out_estat.yp,out.yf=out_estat.yf,pos_leg='topleft')
+```
+
+\clearpage
+# GLM Dinámico
+
+```{r GLM_Dinamico,message=FALSE, warning=FALSE, eval=TRUE, include=FALSE}
+
+source('Modelo_Dinamico.R')
+
+```
+
+```{r Resumen_GLM_dinam}
+#Tabla resumen
+print(out_dinam.sum.t_alpha)
+
+print(out_dinam.sum.t_beta)
+```
+
+```{r DIC_GLM_dinam}
+#DIC
+print(out_dinam.dic)
+```
+
+```{r PlotRegresores_Dinam,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Estático'}
+
+#Predictions
+par(mfrow=c(3,2))
+
+
+# JPM_Dollar_Index vs. WTI
+plot_RegvsWTI(x.name='JPM_Dollar_Index',out.yp=out_dinam.yp,pos_leg='topleft')
+
+# VIX_Index vs. WTI
+plot_RegvsWTI(x.name='VIX_Index',out.yp=out_dinam.yp,pos_leg='topleft')
+
+# OPEP_TOTPROD vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTPROD',out.yp=out_dinam.yp,pos_leg='topleft')
+
+# OPEP_TOTDEM vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTDEM',out.yp=out_dinam.yp,pos_leg='topleft')
+
+# TBILL_10YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_10YR',out.yp=out_dinam.yp,pos_leg='topright')
+
+# TBILL_1YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_1YR',out.yp=out_dinam.yp,pos_leg='topright')
+
+```
+
+```{r tsWTI_Dinam}
+#t vs y
+par(mfrow=c(1,1))
+plot_tsWTI(out.yp=out_dinam.yp,out.yf=out_dinam.yf,pos_leg='topleft')
+
+```
+
+```{r}
+#betas
+out_dinam.beta<-out_dinam.sum[grep("beta",rownames(out_dinam.sum)),]
+
+par(mfrow=c(3,2))
+
+plot_beta_dinam<-plot_beta(out.beta=out_dinam.beta)
+
+lapply(1:6,plot_beta_dinam)
+```
+
+
+
+# GLM Dinámico con intercepto estático
+
+## Codigo JAGS
+```{r}
+#-Running code-
+niter<-10000
+nchains<-2
+nburning<-0.1*niter
+
+#JAGS
+mod_dinam2.sim<-jags(data_dinam2,inits,parameters,model.file="mod_dinamico2.txt",
+               n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1)
+
+```
+
+## Monitoreo de cadena
+```{r}
+#Cadena
+#JAGS
+out_dinam2<-mod_dinam2.sim$BUGSoutput$sims.list
+
+z<-out_dinam2$beta[,1,1] # simulaciones de beta 1 al tiempo 1
+par(mfrow=c(2,2))
+plot(z,type="l")
+plot(cumsum(z)/(1:length(z)),type="l")
+hist(z,freq=FALSE)
+acf(z)
+
+```
+
+```{r}
+#Resumen (estimadores)
+
+#JAGS
+out_dinam2.sum<-mod_dinam2.sim$BUGSoutput$summary
+```
+
+```{r}
+#Tabla resumen
+out_dinam2.sum.t<-out_dinam2.sum[grep("alpha",rownames(out_dinam2.sum)),c(1,3,7)]
+out_dinam2.sum.t<-c(out_dinam2.sum.t,prob=apply(out_dinam2$alpha,2,prob))
+print(out_dinam2.sum.t)
+
+out_dinam2.sum.t<-out_dinam2.sum[grep("beta",rownames(out_dinam2.sum)),c(1,3,7)]
+out_dinam2.sum.t<-cbind(out_dinam2.sum.t,apply(out_dinam2$beta,2,prob))
+dimnames(out_dinam2.sum.t)[[2]][4]<-"prob"
+print(out_dinam2.sum.t)
+```
+
+```{r}
+#DIC
+out_dinam2.dic<-mod_dinam2.sim$BUGSoutput$DIC
+print(out_dinam2.dic)
+```
+
+```{r}
+#Predictions
+out_dinam2.yp<-out_dinam2.sum[grep("yp",rownames(out_dinam2.sum)),]
+ymin<-min(datos_train$WTI,out_dinam2.yp[,c(1,3,7)])
+ymax<-max(datos_train$WTI,out_dinam2.yp[,c(1,3,7)])
+xmin<-1
+xmax<-n+m
+
+# JPM_Dollar_Index vs. WTI
+par(mfrow=c(1,1))
+plot(datos_train$JPM_Dollar_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
+points(datos_train$JPM_Dollar_Index,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
+segments(datos_train$JPM_Dollar_Index,out_dinam2.yp[,3],datos_train$JPM_Dollar_Index,out_dinam2.yp[,7],col=2)
+
+```
+
+```{r}
+# VIX_Index vs. WTI
+par(mfrow=c(1,1))
+plot(datos_train$VIX_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
+points(datos_train$VIX_Index,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
+segments(datos_train$VIX_Index,out_dinam2.yp[,3],datos_train$VIX_Index,out_dinam2.yp[,7],col=2)
+
+```
+
+```{r}
+# OPEP_TOTPROD vs. WTI
+par(mfrow=c(1,1))
+plot(datos_train$OPEP_TOTPROD,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
+points(datos_train$OPEP_TOTPROD,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
+segments(datos_train$OPEP_TOTPROD,out_dinam2.yp[,3],datos_train$OPEP_TOTPROD,out_dinam2.yp[,7],col=2)
+
+```
+
+```{r}
+# OPEP_TOTDEM vs. WTI
+par(mfrow=c(1,1))
+plot(datos_train$OPEP_TOTDEM,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
+points(datos_train$OPEP_TOTDEM,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
+segments(datos_train$OPEP_TOTDEM,out_dinam2.yp[,3],datos_train$OPEP_TOTDEM,out_dinam2.yp[,7],col=2)
+
+```
+
+```{r}
+# TBILL_10YR vs. WTI
+par(mfrow=c(1,1))
+plot(datos_train$TBILL_10YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
+points(datos_train$TBILL_10YR,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
+segments(datos_train$TBILL_10YR,out_dinam2.yp[,3],datos_train$TBILL_10YR,out_dinam2.yp[,7],col=2)
+
+```
+
+```{r}
+# TBILL_1YR vs. WTI
+par(mfrow=c(1,1))
+plot(datos_train$TBILL_1YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
+points(datos_train$TBILL_1YR,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
+segments(datos_train$TBILL_1YR,out_dinam2.yp[,3],datos_train$TBILL_1YR,out_dinam2.yp[,7],col=2)
+
+```
+
+```{r}
+out_dinam2.yf<-out_dinam2.sum[grep("yf",rownames(out_dinam2.sum)),]
+
+#t vs y
+par(mfrow=c(1,1))
+plot(1:(n+m),datos$WTI,type="l",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
+lines(1:(n+m),c(out_dinam2.yp[,1],rep(NA,m)),col='firebrick1')
+lines(1:(n+m),c(rep(NA,n),out_dinam2.yf[,1]),col='royalblue1')
+
+```
+
+```{r}
+#betas
+out_dinam2.beta<-out_dinam2.sum[grep("beta",rownames(out_dinam2.sum)),]
+
+par(mfrow=c(3,2))
+
+plot_beta<-function(x){
+ymin<-min(out_dinam2.beta[,c(x,3,7)])
+ymax<-max(out_dinam2.beta[,c(x,3,7)])
+plot(out_dinam2.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax))
+lines(out_dinam2.beta[seq(x,n,k),3],lty=2)
+lines(out_dinam2.beta[seq(x,n,k),7],lty=2)
+}
+
+lapply(1:6,plot_beta)
+```
+
+
+
+
+
+
+<!-- # GLM Dinámico con suavizamiento -->
+
+<!-- ## Definición de los datos -->
+
+<!-- ```{r} -->
+<!-- #-Defining data- -->
+<!-- data_dinam_suav <- list("n"=n,"m"=m,"y"=datos_train$WTI, "x"=select(datos_train, -WTI)) -->
+
+<!-- ``` -->
+
+<!-- ## Definición de iniciales -->
+<!-- ```{r} -->
+<!-- #-Defining inits- -->
+<!-- inits<-function(){list(alpha=rep(0,n),beta=matrix(0,k,n),tau.y=1,tau.a=1,yp=rep(1,n),yf=rep(1,m))} -->
+
+<!-- ``` -->
+
+<!-- ## selección de parámetros -->
+<!-- ```{r} -->
+<!-- #-Selecting parameters to monitor- -->
+<!-- parameters<-c("alpha","beta","tau.y","tau.a","tau.b","yp","yf") -->
+<!-- ``` -->
+
+<!-- ## Codigo JAGS -->
+<!-- ```{r} -->
+<!-- #-Running code- -->
+<!-- niter<-10000 -->
+<!-- nchains<-2 -->
+<!-- nburning<-0.1*niter -->
+
+<!-- #JAGS -->
+<!-- mod_dinam_suav.sim<-jags(data_dinam_suav,inits,parameters,model.file="mod_dinamico1_suav.txt", -->
+<!--                n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1) -->
+
+<!-- ``` -->
+
+<!-- ## Monitoreo de cadena -->
+<!-- ```{r} -->
+<!-- #Cadena -->
+<!-- #JAGS -->
+<!-- out_dinam_suav<-mod_dinam_suav.sim$BUGSoutput$sims.list -->
+
+<!-- z<-out_dinam_suav$beta[,1,1] # simulaciones de beta 1 al tiempo 1 -->
+<!-- par(mfrow=c(2,2)) -->
+<!-- plot(z,type="l") -->
+<!-- plot(cumsum(z)/(1:length(z)),type="l") -->
+<!-- hist(z,freq=FALSE) -->
+<!-- acf(z) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #Resumen (estimadores) -->
+
+<!-- #JAGS -->
+<!-- out_dinam_suav.sum<-mod_dinam_suav.sim$BUGSoutput$summary -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #Tabla resumen -->
+<!-- out_dinam_suav.sum.t<-out_dinam_suav.sum[grep("alpha",rownames(out_dinam_suav.sum)),c(1,3,7)] -->
+<!-- out_dinam_suav.sum.t<-cbind(out_dinam_suav.sum.t,apply(out_dinam_suav$alpha,2,prob)) -->
+<!-- dimnames(out_dinam_suav.sum.t)[[2]][4]<-"prob" -->
+<!-- print(out_dinam_suav.sum.t) -->
+
+<!-- out_dinam_suav.sum.t<-out_dinam_suav.sum[grep("beta",rownames(out_dinam_suav.sum)),c(1,3,7)] -->
+<!-- out_dinam_suav.sum.t<-cbind(out_dinam_suav.sum.t,apply(out_dinam_suav$beta,2,prob)) -->
+<!-- dimnames(out_dinam_suav.sum.t)[[2]][4]<-"prob" -->
+<!-- print(out_dinam_suav.sum.t) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #DIC -->
+<!-- out_dinam_suav.dic<-mod_dinam_suav.sim$BUGSoutput$DIC -->
+<!-- print(out_dinam_suav.dic) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #Predictions -->
+<!-- out_dinam_suav.yp<-out_dinam_suav.sum[grep("yp",rownames(out_dinam_suav.sum)),] -->
+<!-- ymin<-min(datos_train$WTI,out_dinam_suav.yp[,c(1,3,7)]) -->
+<!-- ymax<-max(datos_train$WTI,out_dinam_suav.yp[,c(1,3,7)]) -->
+<!-- xmin<-1 -->
+<!-- xmax<-n+m -->
+
+<!-- # JPM_Dollar_Index vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$JPM_Dollar_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$JPM_Dollar_Index,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$JPM_Dollar_Index,out_dinam_suav.yp[,3],datos_train$JPM_Dollar_Index,out_dinam_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # VIX_Index vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$VIX_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$VIX_Index,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$VIX_Index,out_dinam_suav.yp[,3],datos_train$VIX_Index,out_dinam_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # OPEP_TOTPROD vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$OPEP_TOTPROD,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$OPEP_TOTPROD,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$OPEP_TOTPROD,out_dinam_suav.yp[,3],datos_train$OPEP_TOTPROD,out_dinam_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # OPEP_TOTDEM vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$OPEP_TOTDEM,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$OPEP_TOTDEM,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$OPEP_TOTDEM,out_dinam_suav.yp[,3],datos_train$OPEP_TOTDEM,out_dinam_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # TBILL_10YR vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$TBILL_10YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$TBILL_10YR,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$TBILL_10YR,out_dinam_suav.yp[,3],datos_train$TBILL_10YR,out_dinam_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # TBILL_1YR vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$TBILL_1YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$TBILL_1YR,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$TBILL_1YR,out_dinam_suav.yp[,3],datos_train$TBILL_1YR,out_dinam_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- out_dinam_suav.yf<-out_dinam_suav.sum[grep("yf",rownames(out_dinam_suav.sum)),] -->
+
+<!-- #t vs y -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(1:(n+m),datos$WTI,type="l",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax)) -->
+<!-- lines(1:(n+m),c(out_dinam_suav.yp[,1],rep(NA,m)),col='firebrick1') -->
+<!-- lines(1:(n+m),c(rep(NA,n),out_dinam_suav.yf[,1]),col='royalblue1') -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #betas -->
+<!-- out_dinam_suav.beta<-out_dinam_suav.sum[grep("beta",rownames(out_dinam_suav.sum)),] -->
+
+<!-- par(mfrow=c(3,2)) -->
+
+<!-- plot_beta<-function(x){ -->
+<!-- ymin<-min(out_dinam_suav.beta[,c(x,3,7)]) -->
+<!-- ymax<-max(out_dinam_suav.beta[,c(x,3,7)]) -->
+<!-- plot(out_dinam_suav.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax)) -->
+<!-- lines(out_dinam_suav.beta[seq(x,n,k),3],lty=2) -->
+<!-- lines(out_dinam_suav.beta[seq(x,n,k),7],lty=2) -->
+<!-- } -->
+
+<!-- lapply(1:6,plot_beta) -->
+<!-- ``` -->
+
+
+
+
+
+
+
+<!-- # GLM Dinámico con intercepto estático con suavizamiento -->
+
+<!-- ## Definición de los datos -->
+
+<!-- ```{r} -->
+<!-- #-Defining data- -->
+<!-- data_dinam2_suav <- list("n"=n,"m"=m,"y"=datos_train$WTI, "x"=select(datos_train, -WTI)) -->
+
+<!-- ``` -->
+
+<!-- ## Definición de iniciales -->
+<!-- ```{r} -->
+<!-- #-Defining inits- -->
+<!-- inits<-function(){list(alpha=0,beta=matrix(0,k,n),tau.y=1,tau.b=rep(1,k),yp=rep(1,n),yf=rep(1,m))} -->
+
+<!-- ``` -->
+
+<!-- ## selección de parámetros -->
+<!-- ```{r} -->
+<!-- #-Selecting parameters to monitor- -->
+<!-- parameters<-c("alpha","beta","tau.y","tau.b","yp","yf") -->
+<!-- ``` -->
+
+<!-- ## Codigo JAGS -->
+<!-- ```{r} -->
+<!-- #-Running code- -->
+<!-- niter<-10000 -->
+<!-- nchains<-2 -->
+<!-- nburning<-0.1*niter -->
+
+<!-- #JAGS -->
+<!-- mod_dinam2_suav.sim<-jags(data_dinam2_suav,inits,parameters,model.file="mod_dinamico2.txt", -->
+<!--                n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1) -->
+
+<!-- ``` -->
+
+<!-- ## Monitoreo de cadena -->
+<!-- ```{r} -->
+<!-- #Cadena -->
+<!-- #JAGS -->
+<!-- out_dinam2_suav<-mod_dinam2_suav.sim$BUGSoutput$sims.list -->
+
+<!-- z<-out_dinam2_suav$beta[,1,1] # simulaciones de beta 1 al tiempo 1 -->
+<!-- par(mfrow=c(2,2)) -->
+<!-- plot(z,type="l") -->
+<!-- plot(cumsum(z)/(1:length(z)),type="l") -->
+<!-- hist(z,freq=FALSE) -->
+<!-- acf(z) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #Resumen (estimadores) -->
+
+<!-- #JAGS -->
+<!-- out_dinam2_suav.sum<-mod_dinam2_suav.sim$BUGSoutput$summary -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #Tabla resumen -->
+<!-- out_dinam2_suav.sum.t<-out_dinam2_suav.sum[grep("alpha",rownames(out_dinam2_suav.sum)),c(1,3,7)] -->
+<!-- out_dinam2_suav.sum.t<-c(out_dinam2_suav.sum.t,prob=apply(out_dinam2_suav$alpha,2,prob)) -->
+<!-- print(out_dinam2_suav.sum.t) -->
+
+<!-- out_dinam2_suav.sum.t<-out_dinam2_suav.sum[grep("beta",rownames(out_dinam2_suav.sum)),c(1,3,7)] -->
+<!-- out_dinam2_suav.sum.t<-cbind(out_dinam2_suav.sum.t,apply(out_dinam2_suav$beta,2,prob)) -->
+<!-- dimnames(out_dinam2_suav.sum.t)[[2]][4]<-"prob" -->
+<!-- print(out_dinam2_suav.sum.t) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #DIC -->
+<!-- out_dinam2_suav.dic<-mod_dinam2_suav.sim$BUGSoutput$DIC -->
+<!-- print(out_dinam2_suav.dic) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #Predictions -->
+<!-- out_dinam2_suav.yp<-out_dinam2_suav.sum[grep("yp",rownames(out_dinam2_suav.sum)),] -->
+<!-- ymin<-min(datos_train$WTI,out_dinam2_suav.yp[,c(1,3,7)]) -->
+<!-- ymax<-max(datos_train$WTI,out_dinam2_suav.yp[,c(1,3,7)]) -->
+<!-- xmin<-1 -->
+<!-- xmax<-n+m -->
+
+<!-- # JPM_Dollar_Index vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$JPM_Dollar_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$JPM_Dollar_Index,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$JPM_Dollar_Index,out_dinam2_suav.yp[,3],datos_train$JPM_Dollar_Index,out_dinam2_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # VIX_Index vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$VIX_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$VIX_Index,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$VIX_Index,out_dinam2_suav.yp[,3],datos_train$VIX_Index,out_dinam2_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # OPEP_TOTPROD vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$OPEP_TOTPROD,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$OPEP_TOTPROD,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$OPEP_TOTPROD,out_dinam2_suav.yp[,3],datos_train$OPEP_TOTPROD,out_dinam2_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # OPEP_TOTDEM vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$OPEP_TOTDEM,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$OPEP_TOTDEM,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$OPEP_TOTDEM,out_dinam2_suav.yp[,3],datos_train$OPEP_TOTDEM,out_dinam2_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # TBILL_10YR vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$TBILL_10YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$TBILL_10YR,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$TBILL_10YR,out_dinam2_suav.yp[,3],datos_train$TBILL_10YR,out_dinam2_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # TBILL_1YR vs. WTI -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(datos_train$TBILL_1YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
+<!-- points(datos_train$TBILL_1YR,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
+<!-- segments(datos_train$TBILL_1YR,out_dinam2_suav.yp[,3],datos_train$TBILL_1YR,out_dinam2_suav.yp[,7],col=2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- out_dinam2_suav.yf<-out_dinam2_suav.sum[grep("yf",rownames(out_dinam2_suav.sum)),] -->
+
+<!-- #t vs y -->
+<!-- par(mfrow=c(1,1)) -->
+<!-- plot(1:(n+m),datos$WTI,type="l",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax)) -->
+<!-- lines(1:(n+m),c(out_dinam2_suav.yp[,1],rep(NA,m)),col='firebrick1') -->
+<!-- lines(1:(n+m),c(rep(NA,n),out_dinam2_suav.yf[,1]),col='royalblue1') -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #betas -->
+<!-- out_dinam2_suav.beta<-out_dinam2_suav.sum[grep("beta",rownames(out_dinam2_suav.sum)),] -->
+
+<!-- par(mfrow=c(3,2)) -->
+
+<!-- plot_beta<-function(x){ -->
+<!-- ymin<-min(out_dinam2_suav.beta[,c(x,3,7)]) -->
+<!-- ymax<-max(out_dinam2_suav.beta[,c(x,3,7)]) -->
+<!-- plot(out_dinam2_suav.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax)) -->
+<!-- lines(out_dinam2_suav.beta[seq(x,n,k),3],lty=2) -->
+<!-- lines(out_dinam2_suav.beta[seq(x,n,k),7],lty=2) -->
+<!-- } -->
+
+<!-- lapply(1:6,plot_beta) -->
+<!-- ``` -->
+
+
+
+
