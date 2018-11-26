@@ -103,7 +103,7 @@ plot_beta<-function(out.beta){
 
 ## Hipótesis
 
-
+jfñlskjfas
 # Datos
 
 ## Descripción de los datos
