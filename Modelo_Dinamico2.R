@@ -20,12 +20,13 @@ parameters<-c("alpha","beta","tau.y","tau.b","yp","yf")
 #-Running code in JAGS-
 set.seed(semilla)
 mod_dinam2.sim<-jags(data_dinam2,inits,parameters,model.file="mod_dinamico2.txt",
-                     n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1)
+                     n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1,
+                     progress.bar='none')
 
 #-Monitoring the chains-
 
 #JAGS Output
-out_dinam<-mod_dinam.sim$BUGSoutput$sims.list
+out_dinam2<-mod_dinam2.sim$BUGSoutput$sims.list
 
 # # Chain for coefficients
 # z<-out_dinam$beta[,1,1] # simulaciones de beta 1 al tiempo 1
@@ -38,37 +39,31 @@ out_dinam<-mod_dinam.sim$BUGSoutput$sims.list
 #-Coefficient Summary-
 
 # Simulations
-out_dinam.sum<-mod_dinam.sim$BUGSoutput$summary
+out_dinam2.sum<-mod_dinam2.sim$BUGSoutput$summary
 
 # Modes
-modas_dinam_alpha<-apply(out_dinam$alpha,2,getmode)
-modas_dinam_beta<-unlist(lapply(1:n,function(x){apply(out_dinam$beta[,,x],2,getmode)}))
+modas_dinam2<-c(apply(out_dinam2$alpha,2,getmode),unlist(lapply(1:n,function(x){apply(out_dinam2$beta[,,x],2,getmode)})))
 
 # Summary
-out_dinam.sum.t_alpha<-cbind(out_dinam.sum[grep("alpha",rownames(out_dinam.sum)),c(1,3,5,7)],modas_dinam_alpha)
-out_dinam.sum.t_alpha<-cbind(out_dinam.sum.t_alpha,apply(out_dinam$alpha,2,prob))
-out_dinam.sum.t_alpha<-out_dinam.sum.t_alpha[,c(1,3,5,2,4,6)]
-colnames(out_dinam.sum.t_alpha)<-c("Media","Mediana","Moda","2.5%","97.5%","Prob.")
-rownames(out_dinam.sum.t_alpha)<-paste('Intercepto t=',1:n,sep='_')
-
-
-out_dinam.sum.t_beta<-cbind(out_dinam.sum[grep("beta",rownames(out_dinam.sum)),c(1,3,5,7)],modas_dinam_beta)
-out_dinam.sum.t_beta<-cbind(out_dinam.sum.t_beta,apply(out_dinam$beta,2,prob))
-out_dinam.sum.t_beta<-out_dinam.sum.t_beta[,c(1,3,5,2,4,6)]
-colnames(out_dinam.sum.t_beta)<-c("Media","Mediana","Moda","2.5%","97.5%","Prob.")
-rownames(out_dinam.sum.t_beta)<-paste(rep(c('JPM Dollar Ind.','VIX Ind','Prod. OPEP','Dem. OPEP','T-Bill 10YR','T-Bill 1YR'),n),rep(1:n,each=k),sep=' t=')
+out_dinam2.sum.t<-cbind(rbind(out_dinam2.sum[grep("alpha",rownames(out_dinam2.sum)),c(1,3,5,7)],
+                                  out_dinam2.sum[grep("beta",rownames(out_dinam2.sum)),c(1,3,5,7)]),
+                            modas_dinam2)
+out_dinam2.sum.t<-cbind(out_dinam2.sum.t,
+                        c(apply(out_dinam2$alpha,2,prob),
+                          unlist(lapply(1:n, function(x){apply(out_dinam2$beta[,,x],2,prob)}))))
+out_dinam2.sum.t<-out_dinam2.sum.t[,c(1,3,5,2,4,6)]
+colnames(out_dinam2.sum.t)<-c("Media","Mediana","Moda","2.5%","97.5%","Prob.")
+rownames(out_dinam2.sum.t)<-c('Intercepto',
+                              paste(rep(c('JPM Dollar Ind.','VIX Ind','Prod. OPEP','Dem. OPEP','T-Bill 10YR','T-Bill 1YR'),n),rep(1:n,each=k),sep=' t='))
 
 #-DIC-
-out_dinam.dic<-mod_dinam.sim$BUGSoutput$DIC
+out_dinam2.dic<-mod_dinam2.sim$BUGSoutput$DIC
 
 #-Predictions-
-out_dinam.yp<-out_dinam.sum[grep("yp",rownames(out_dinam.sum)),]
+out_dinam2.yp<-out_dinam2.sum[grep("yp",rownames(out_dinam2.sum)),]
 
 #-Forecast-
-out_dinam.yf<-out_dinam.sum[grep("yf",rownames(out_dinam.sum)),]
-
-#-alpha-
-out_dinam.alpha<-out_dinam.sum[grep("alpha",rownames(out_dinam.sum)),]
+out_dinam2.yf<-out_dinam2.sum[grep("yf",rownames(out_dinam2.sum)),]
 
 #-Betas-
-out_dinam.beta<-out_dinam.sum[grep("beta",rownames(out_dinam.sum)),]
+out_dinam2.beta<-out_dinam2.sum[grep("beta",rownames(out_dinam2.sum)),]

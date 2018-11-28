@@ -17,6 +17,6 @@ for (i in 1:n) { yp[i] ~ dnorm(mu[i],tau) }
 
 
 # Forecasts
-for (i in 1:m) { yf[i] ~ dnorm(mu[i],tau) }
+for (i in 1:m) { yf[i] ~ dnorm(mu[n],tau) }
 
 }

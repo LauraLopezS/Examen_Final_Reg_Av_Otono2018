@@ -1,7 +1,12 @@
 ---
 title: "Regresión Avanzada Proyecto Final"
-author: "Dante Ruiz"
-date: "11/24/2018"
+author: "Alejandra Lelo de Larrea Ibarra 00012433 \\ Laura López Santibañez Jácome 000144088 \\ Dante Ruiz Martínez 000183340"
+date: "10 de diciembre del 2018"
+header-includes:
+  - \usepackage[utf8]{inputenc}
+  - \usepackage[spanish,mexico]{babel}
+  - \usepackage{arydshln}
+abstract: "Agregar un resumen al final."
 output: 
   pdf_document:
     fig_caption: yes
@@ -10,11 +15,12 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r setWD}
-setwd("~/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05 Proyecto Final")
+# setwd("~/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05 Proyecto Final")
+setwd("//client/E$/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzada/05_Proyecto_Final")
 ```
 
 ```{r librerias,message=FALSE, warning=FALSE}
@@ -23,11 +29,46 @@ setwd("~/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05 Proyecto 
 library(R2jags)
 library(tidyverse)
 library(gridExtra)
-library(xtable)
+library(xtable) # para edición de tablas
+library(pastecs)#para analisis descriptivo de datos
+
 
 ```
 
 ```{r funciones_aux}
+
+# Gráfica de series de tiempo
+plot_ts<-function(datos,Fechas){
+  
+  output<-function(var,color,var.name,unidades){
+    
+    par(mar=c(5.1,2.1,3.1,2.1))
+
+    nobs<-nrow(datos)
+  
+    col<-match(var,colnames(datos))
+    y<-unlist(datos[,col])
+  
+    xmin<-1
+    xmax<-nobs
+    ymin<-min(y,na.rm=TRUE)
+    ymax<-max(y,na.rm=TRUE)
+  
+    plot(1:nobs,y,type="l",lwd=2,lty=1,col=color,
+         xaxt='n',ylim=c(ymin,ymax),xlim=c(xmin,xmax),
+         xlab='',ylab=var.name,
+         main=var.name)
+    
+    mtext(paste("(",unidades,")",sep=''), side=3,line=0,cex=0.8)
+
+    axis(1,at=seq(1,nobs,6),labels=Fechas[seq(1,nobs,6)],las=2)
+    
+    abline(h=seq(ymin,ymax,ceiling((ymax-ymin)/10)),lty=2,lwd=1,col='gray50')
+  }
+  
+  output
+}
+
 
 # Probabilidad
 prob<-function(x){
@@ -40,12 +81,19 @@ getmode <- function(v) {
    uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
+# Grafica de regresores vs WTI
 plot_RegvsWTI<-function(x.name,out.yp,pos_leg){
   
   col_reg<-match(x.name,colnames(datos_train))
   x<-unlist(datos_train[,col_reg])
   y<-datos_train$WTI
 
+  x.name<-case_when(x.name=='JPM_Dollar_Index.name'~'JPM Dollar Index.name',
+                    x.name=='VIx.name_Index.name'~'VIx.name Index.name',
+                    x.name=='OPEP_TOTPROD'~'Prod. OPEP',
+                    x.name=='OPEP_TOTDEM'~'Dem. OPEP',
+                    x.name=='TBILL_10YR'~'TBILL-10YR',
+                    x.name=='TBILL_1YR'~'TBILL-1YR')
   
   ymin<-min(y,out.yp[,c(1,3,7)])
   ymax<-max(y,out.yp[,c(1,3,7)])
@@ -62,6 +110,7 @@ plot_RegvsWTI<-function(x.name,out.yp,pos_leg){
   legend(pos_leg,legend=c('Observado','Ajustado'),pch=16,col=c('grey50','firebrick1'))
 }
 
+# Gráfica de ajuste y pronóstico WTI
 plot_tsWTI<-function(out.yp,out.yf,pos_leg){
   
   xmin<-1
@@ -72,29 +121,50 @@ plot_tsWTI<-function(out.yp,out.yf,pos_leg){
   plot(1:(n+m),datos$WTI,type="l",lwd=2,col="grey80",xaxt='n',ylim=c(ymin,ymax),xlim=c(xmin,xmax),xlab='',ylab='WTI')
   lines(1:(n+m),c(out.yp[,1],out.yf[1,1],rep(NA,m-1)),lty=2,col='firebrick1')
   lines(1:(n+m),c(rep(NA,n-1),out.yp[n,1],out.yf[,1]),lty=1,lwd=2,col='royalblue1')
-  axis(1,at=1:(n+m),labels=Fecha,hadj=0.5)
+  axis(1,at=seq(1,n+m,6),labels=Fecha[seq(1,n+m,6)],las=2)
   legend(pos_leg,legend=c('Observado','Ajustado','Pronosticado'),lty=c(1,2,1),lwd=c(2,1,2),col=c('grey50','firebrick1','royalblue1'))
 }
 
 
+# Gráfica de serire de tiempo de coeficients
 plot_beta<-function(out.beta){
   
   plotfun<-function (x){
   
-  ymin<-min(out_dinam.beta[,c(x,3,7)])
-  ymax<-max(out_dinam.beta[,c(x,3,7)])
-  xmin<-1
-  xmax<-n
+    name.y<-case_when(x==1~'JPM Dollar Index',
+                      x==2~'VIX Index',
+                      x==3~'Prod. OPEP',
+                      x==4~'Dem. OPEP',
+                      x==5~'TBILL-10YR',
+                      x==6~'TBILL-1YR')
+                      
+                   
+    ymin<-min(out.beta[seq(x,nrow(out.beta),k),c(1,3,7)])
+    ymax<-max(out.beta[seq(x,nrow(out.beta),k),c(1,3,7)])
+    xmin<-1
+    xmax<-n
+    
+    plot(out.beta[seq(x,nrow(out.beta),k),1],
+         type="l",lty=1,lwd=2,col='firebrick1',
+         ylim=c(ymin,ymax),xlim=c(xmin,xmax),xaxt='n',
+         xlab='',ylab=name.y,
+         main=paste('Serie de tiempo del coeficiente estimado para ', name.y,sep=""))
+    
+    lines(out.beta[seq(x,nrow(out.beta),k),3],lty=2,lwd=2,col='gray50')
+    
+    lines(out.beta[seq(x,nrow(out.beta),k),7],lty=2,lwd=2,col='gray50')
+    
+    axis(1,at=seq(1,n,6),labels=Fecha[seq(1,n,6)],las=2)
+    
+    legend('topright',legend=c('Media','Banda Conf. 95%'),lty=c(1,2),lwd=2,col=c('firebrick1','gray50'))
   
-  plot(out.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax),xlim=c(xmin,xmax),lty=1,lwd=2,col='firebrick1')
-  lines(out.beta[seq(x,n,k),3],lty=2,lwd=2,col='gray50')
-  lines(out.beta[seq(x,n,k),7],lty=2,lwd=2,col='gray50')
-  }  
+         }  
   plotfun
 }
 
 ```
 
+\newpage
 # Introducción
 
 ## Problema
@@ -103,31 +173,49 @@ plot_beta<-function(out.beta){
 
 ## Hipótesis
 
-jfñlskjfas
+\newpage
 # Datos
 
 ## Descripción de los datos
 
-Variable:	Unidades
-WTI:	dólares por barril 
-JPM_Dollar_Index:	unidades
-VIX_Index:	unidades
-OPEP_TOTPROD:	millones de barriles por día
-OPEP_TOTDEM:	millones de barriles por dia
-TBILL_10YR:	porciento
-TBILL_1YR:	porciento
+\begin{table}[h]
+  \small
+  \caption{Resumen de los Datos}
+  \label{tabla:Datos}
+  \begin{tabular}{l|p{5cm}|p{3cm}|l|l}
+    \hline
+    Código & Variable &  Unidades & Fuente & Ticker \\
+    \hline
+    WTI & West Texas Intermediate &  Dólares por barril & Bloomberg & CL1 Comdty \\
+    \hdashline
+    JPM Dollar Index & JPM Dollar Index &	Unidades & Bloomberg & FXJPEMCI Index \\
+    \hdashline
+    VIX & Chicago Board Options Exchange SPX Volatility Index & Unidades & Bloomberg & VIX Index \\
+    \hdashline
+    Prod. OPEP & Producción Total de Petróleo de la OPEP & Millones de barriles por día & Bloomberg & OPCRTOTL Index \\
+    \hdashline
+    Dem. OPEP & Demanda Total de Petróleo de la OPEP & Millones de barriles por dia & Bloomberg & OPCBRTOT Index\\
+    \hline
+    TBILL-10YR & Tasa de Largo Plazo de Estados Unidos & Porciento & FRED & DGS10\\
+    \hdashline
+    TBILL-1YR & Tasa de Corto Plazo de Estados Unidos & Porciento & FRED & DGS1\\
+    \hline
+  \end{tabular}
+\end{table}
+
+Se tienen observaciones mensuales del West Texas Intermediate (WTI), del JPM Dollar Index, del Chicago Board Options Exchange SPX Volatility Index, de la producción y demanda de petróleo por parte de la OPEP, así como las tasas de corto y largo plazo en Estados Unidos. La tabla \ref{tabla:Datos} resume las fuentes de información de los datos a utilizar en este trabajo. La muestra contiene 225 observaciones que corresponden al periodo de enero del 2000 a septiembre del 2018. Para estimar los modelos se utiliza el periodo comprendido entre enero del 2000 y junio del 2018; mientras que el horizonte de pronóstico va de julio del 2018 a septiembre del 2018. La siguiente sección muestra una análisis exploratorio de los datos. 
 
 ```{r LimpiezaDatos,warning=FALSE, message=FALSE}
+
 source('01_Clean_Data_Petroleo.R')
+
 ```
 
 ## Análisis exploratorio de los datos
 
-```{r}
-datos_1
-```
 
-```{r}
+```{r SetDatos}
+
 # Seleccioanmos el set de datos a usar
 datos<-datos_1
 
@@ -137,13 +225,76 @@ Fecha<-datos$Fecha
 # Eliminamos la fecha de los datos 
 datos <- select(datos, -Fecha)
 
-# Grafiamos los datos. 
-plot(ts(datos, start = c(2000,1), frequency = 12))
+# Función para graficar con estos datos. 
+plot_ts_datos<-plot_ts(datos,Fecha)
+
+
 ```
 
+```{r PlotWTI,fig.pos='H',fig.width=12,fig.height=6,fig.cap='Serie de Tiempo del precio del West Texas Intermediate'}
 
-```{r}
-cor(datos)
+# WTI
+plot_ts_datos('WTI','firebrick1','West Texas Intermediate','Dólares por barril')
+
+
+```
+
+```{r PlotsRegresores,fig.pos='H',fig.width=12,fig.height=12,fig.cap='Serie de Tiempo del precio del West Texas Intermediate'}
+
+par(mfrow=c(3,2))
+
+# JPM_Dollar_Index
+plot_ts_datos('JPM_Dollar_Index','royalblue1','JPM Dollar Index','Unidades')
+
+# VIX_Index
+plot_ts_datos('VIX_Index','darkgoldenrod1','VIX','Unidades')
+
+# OPEP_TOTPROD
+plot_ts_datos('OPEP_TOTPROD','olivedrab','Producción de la OPEP','Millones de barriles')
+
+# OPEP_TOTDEM
+plot_ts_datos('OPEP_TOTDEM','lightblue1','Demanda de la OPEP','Millones de barriles')
+
+# JPM_Dollar_Index
+plot_ts_datos('TBILL_10YR','coral','Tasa Largo Plazo EU','Porciento')
+
+# JPM_Dollar_Index
+plot_ts_datos('TBILL_1YR','mediumpurple1','Tasa Corto Plazo EU','Porciento')
+
+```
+
+```{r TablaCor, results='asis'}
+# Matriz de correlaciones
+mat_cor<-cor(datos)
+colnames(mat_cor)<-c('WTI','JPM Dollar Ind.','VIX','Prod. OPEP','Dem. OPEP','TBILL-10YR','TBILL-1YR')
+rownames(mat_cor)<-c('WTI','JPM Dollar Ind.','VIX','Prod. OPEP','Dem. OPEP','TBILL-10YR','TBILL-1YR')
+
+mat_cor_tabla<-xtable(mat_cor,caption='Matriz de correlaciones de las variables de estudio',
+                      label='tabla:mat_cor')
+
+align(mat_cor_tabla)<-'lrrrrrrr'
+print(mat_cor_tabla,comment=FALSE,print.placement='H',caption.placement = 'top',digits=2,size='small')
+
+
+```
+
+```{r TablaStatDesc, results='asis'}
+
+# Matriz de correlaciones
+estdesc<-rbind(stat.desc(datos),apply(datos,2,getmode))[c(8:9,15,12:14,4:6),]
+
+# Nombre de filas y columnas
+colnames(estdesc)<-c('WTI','JPM Dollar Ind.','VIX','Prod. OPEP','Dem. OPEP','TBILL-10YR','TBILL-1YR')
+rownames(estdesc)<-c('Mediana','Media','Moda','Varianza','Desv.Est.','Coef. Var.','Min','Max','Rango')
+
+# Impresion de la tabla
+estdesc_tabla<-xtable(estdesc,caption='Estadísticas Descriptivas de las Variables de Estudio',
+                      label='tabla:estdesc')
+
+align(estdesc_tabla)<-'lrrrrrrr'
+print(estdesc_tabla,comment=FALSE,print.placement='H',caption.placement = 'top',digits=2,size='small')
+
+
 ```
 
 ```{r Train_y_Test}
@@ -161,12 +312,14 @@ m <- nrow(datos_test)
 k<- 6
 ```
 
+\newpage
 # MRLMN
 
-PENDIENTE.... 
+PENDIENTE....
 
-\clearpage
+
 # GLM Estático
+
 ```{r GLM_Estatico,message=FALSE, warning=FALSE, eval=TRUE, include=FALSE}
 
 source('Modelo_Estatico.R')
@@ -189,11 +342,11 @@ print(out_estat.sum.t_tabla,comment=FALSE,caption.placement = 'top')
 ```{r DIC_GLM_Estatico}
 
 #Imprimir DIC
-print(out_estat.dic)
+print(paste('DIC=',out_estat.dic,sep=''))
 
 ```
 
-```{r PlotRegresores_Estatico,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Estático'}
+```{r PlotRegresores_Estatico,fig.width=12,fig.height=8,fig.cap='Regresores vs WTI: Modelo Estático'}
 
 #Predictions
 par(mfrow=c(3,2))
@@ -219,13 +372,15 @@ plot_RegvsWTI(x.name='TBILL_1YR',out.yp=out_estat.yp,pos_leg='topright')
 
 ```
 
-```{r tsWTI_Estatico}
+```{r tsWTI_Estatico,fig.width=12,fig.height=6,fig.cap='Ajuste y Predicción: Modelo Estático'}
+
 #t vs y
 par(mfrow=c(1,1))
 plot_tsWTI(out.yp=out_estat.yp,out.yf=out_estat.yf,pos_leg='topleft')
+
 ```
 
-\clearpage
+
 # GLM Dinámico
 
 ```{r GLM_Dinamico,message=FALSE, warning=FALSE, eval=TRUE, include=FALSE}
@@ -234,11 +389,26 @@ source('Modelo_Dinamico.R')
 
 ```
 
-```{r Resumen_GLM_dinam}
+```{r Resumen_GLM_dinam,eval=FALSE, include=FALSE}
 #Tabla resumen
-print(out_dinam.sum.t_alpha)
+out_dinam.sum.t_alpha_tabla<-xtable(out_dinam.sum.t_alpha,
+                              caption='Interceptos Estimados para el Modelo Dinámico',
+                              label='tabla:coef_mod_dinam')
 
-print(out_dinam.sum.t_beta)
+align(out_dinam.sum.t_alpha_tabla)<-'l|rrrrrr'
+
+print(out_dinam.sum.t_alpha_tabla,comment=FALSE,caption.placement = 'top')
+
+
+out_dinam.sum.t_beta_tabla<-xtable(out_dinam.sum.t_beta,
+                              caption='Coeficientes Estimados para el Modelo Dinámico',
+                              label='tabla:coef_mod_dinam')
+
+align(out_dinam.sum.t_beta_tabla)<-'l|rrrrrr'
+
+print(out_dinam.sum.t_beta_tabla,comment=FALSE,caption.placement = 'top')
+
+
 ```
 
 ```{r DIC_GLM_dinam}
@@ -246,7 +416,7 @@ print(out_dinam.sum.t_beta)
 print(out_dinam.dic)
 ```
 
-```{r PlotRegresores_Dinam,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Estático'}
+```{r PlotRegresores_Dinam,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Dinámico'}
 
 #Predictions
 par(mfrow=c(3,2))
@@ -272,17 +442,15 @@ plot_RegvsWTI(x.name='TBILL_1YR',out.yp=out_dinam.yp,pos_leg='topright')
 
 ```
 
-```{r tsWTI_Dinam}
+```{r tsWTI_Dinam,fig.width=12,fig.height=6,fig.cap='Ajuste y Predicción: Modelo Dinámico'}
 #t vs y
 par(mfrow=c(1,1))
 plot_tsWTI(out.yp=out_dinam.yp,out.yf=out_dinam.yf,pos_leg='topleft')
 
 ```
 
-```{r}
+```{r tsBetas_Dinam,message=FALSE, warning=FALSE, fig.width=12,fig.height=8,fig.cap='Coeficientes Estimados: Modelo Dinámico'}
 #betas
-out_dinam.beta<-out_dinam.sum[grep("beta",rownames(out_dinam.sum)),]
-
 par(mfrow=c(3,2))
 
 plot_beta_dinam<-plot_beta(out.beta=out_dinam.beta)
@@ -291,492 +459,224 @@ lapply(1:6,plot_beta_dinam)
 ```
 
 
-
 # GLM Dinámico con intercepto estático
 
-## Codigo JAGS
-```{r}
-#-Running code-
-niter<-10000
-nchains<-2
-nburning<-0.1*niter
+```{r GLM_Dinamico2,message=FALSE, warning=FALSE, eval=TRUE, include=FALSE}
 
-#JAGS
-mod_dinam2.sim<-jags(data_dinam2,inits,parameters,model.file="mod_dinamico2.txt",
-               n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1)
+source('Modelo_Dinamico2.R')
 
 ```
 
-## Monitoreo de cadena
-```{r}
-#Cadena
-#JAGS
-out_dinam2<-mod_dinam2.sim$BUGSoutput$sims.list
-
-z<-out_dinam2$beta[,1,1] # simulaciones de beta 1 al tiempo 1
-par(mfrow=c(2,2))
-plot(z,type="l")
-plot(cumsum(z)/(1:length(z)),type="l")
-hist(z,freq=FALSE)
-acf(z)
-
-```
-
-```{r}
-#Resumen (estimadores)
-
-#JAGS
-out_dinam2.sum<-mod_dinam2.sim$BUGSoutput$summary
-```
-
-```{r}
+```{r Resumen_GLM_dinam2, eval=FALSE, include=FALSE,results='asis'}
 #Tabla resumen
-out_dinam2.sum.t<-out_dinam2.sum[grep("alpha",rownames(out_dinam2.sum)),c(1,3,7)]
-out_dinam2.sum.t<-c(out_dinam2.sum.t,prob=apply(out_dinam2$alpha,2,prob))
-print(out_dinam2.sum.t)
+out_dinam2.sum.t_tabla<-xtable(out_dinam2.sum.t,
+                              caption='Coeficientes Estimados para el Modelo Dinámico con Intercepto Estático',
+                              label='tabla:coef_mod_dinam2')
 
-out_dinam2.sum.t<-out_dinam2.sum[grep("beta",rownames(out_dinam2.sum)),c(1,3,7)]
-out_dinam2.sum.t<-cbind(out_dinam2.sum.t,apply(out_dinam2$beta,2,prob))
-dimnames(out_dinam2.sum.t)[[2]][4]<-"prob"
-print(out_dinam2.sum.t)
+align(out_dinam2.sum.t_tabla)<-'l|rrrrrr'
+
+print(out_dinam2.sum.t_tabla,comment=FALSE,caption.placement = 'top')
+
 ```
 
-```{r}
+```{r DIC_GLM_dinam2}
 #DIC
-out_dinam2.dic<-mod_dinam2.sim$BUGSoutput$DIC
-print(out_dinam2.dic)
+print(paste('DIC=',out_dinam2.dic,sep=''))
 ```
 
-```{r}
+```{r PlotRegresores_Dinam2,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Dinámico con Intercepto Estático'}
+
 #Predictions
-out_dinam2.yp<-out_dinam2.sum[grep("yp",rownames(out_dinam2.sum)),]
-ymin<-min(datos_train$WTI,out_dinam2.yp[,c(1,3,7)])
-ymax<-max(datos_train$WTI,out_dinam2.yp[,c(1,3,7)])
-xmin<-1
-xmax<-n+m
+par(mfrow=c(3,2))
+
 
 # JPM_Dollar_Index vs. WTI
-par(mfrow=c(1,1))
-plot(datos_train$JPM_Dollar_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
-points(datos_train$JPM_Dollar_Index,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
-segments(datos_train$JPM_Dollar_Index,out_dinam2.yp[,3],datos_train$JPM_Dollar_Index,out_dinam2.yp[,7],col=2)
+plot_RegvsWTI(x.name='JPM_Dollar_Index',out.yp=out_dinam2.yp,pos_leg='topleft')
 
-```
-
-```{r}
 # VIX_Index vs. WTI
-par(mfrow=c(1,1))
-plot(datos_train$VIX_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
-points(datos_train$VIX_Index,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
-segments(datos_train$VIX_Index,out_dinam2.yp[,3],datos_train$VIX_Index,out_dinam2.yp[,7],col=2)
+plot_RegvsWTI(x.name='VIX_Index',out.yp=out_dinam2.yp,pos_leg='topright')
 
-```
-
-```{r}
 # OPEP_TOTPROD vs. WTI
-par(mfrow=c(1,1))
-plot(datos_train$OPEP_TOTPROD,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
-points(datos_train$OPEP_TOTPROD,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
-segments(datos_train$OPEP_TOTPROD,out_dinam2.yp[,3],datos_train$OPEP_TOTPROD,out_dinam2.yp[,7],col=2)
+plot_RegvsWTI(x.name='OPEP_TOTPROD',out.yp=out_dinam2.yp,pos_leg='topleft')
 
-```
-
-```{r}
 # OPEP_TOTDEM vs. WTI
-par(mfrow=c(1,1))
-plot(datos_train$OPEP_TOTDEM,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
-points(datos_train$OPEP_TOTDEM,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
-segments(datos_train$OPEP_TOTDEM,out_dinam2.yp[,3],datos_train$OPEP_TOTDEM,out_dinam2.yp[,7],col=2)
+plot_RegvsWTI(x.name='OPEP_TOTDEM',out.yp=out_dinam2.yp,pos_leg='topleft')
 
-```
-
-```{r}
 # TBILL_10YR vs. WTI
-par(mfrow=c(1,1))
-plot(datos_train$TBILL_10YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
-points(datos_train$TBILL_10YR,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
-segments(datos_train$TBILL_10YR,out_dinam2.yp[,3],datos_train$TBILL_10YR,out_dinam2.yp[,7],col=2)
+plot_RegvsWTI(x.name='TBILL_10YR',out.yp=out_dinam2.yp,pos_leg='topright')
 
-```
-
-```{r}
 # TBILL_1YR vs. WTI
-par(mfrow=c(1,1))
-plot(datos_train$TBILL_1YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax))
-points(datos_train$TBILL_1YR,out_dinam2.yp[,1],col=2,pch=16,cex=0.5)
-segments(datos_train$TBILL_1YR,out_dinam2.yp[,3],datos_train$TBILL_1YR,out_dinam2.yp[,7],col=2)
+plot_RegvsWTI(x.name='TBILL_1YR',out.yp=out_dinam2.yp,pos_leg='topright')
 
 ```
 
-```{r}
-out_dinam2.yf<-out_dinam2.sum[grep("yf",rownames(out_dinam2.sum)),]
+```{r tsWTI_Dinam2,fig.width=12,fig.height=6,fig.cap='Ajuste y Predicción: Modelo Dinámico'}
 
 #t vs y
 par(mfrow=c(1,1))
-plot(1:(n+m),datos$WTI,type="l",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax))
-lines(1:(n+m),c(out_dinam2.yp[,1],rep(NA,m)),col='firebrick1')
-lines(1:(n+m),c(rep(NA,n),out_dinam2.yf[,1]),col='royalblue1')
+plot_tsWTI(out.yp=out_dinam2.yp,out.yf=out_dinam2.yf,pos_leg='topleft')
 
 ```
 
-```{r}
+```{r  tsBetas_Dinam2,message=FALSE, warning=FALSE, fig.width=12,fig.height=8,fig.cap='Coeficientes Estimados: Modelo Dinámico con Intercepto Estático',results='hide'}
 #betas
-out_dinam2.beta<-out_dinam2.sum[grep("beta",rownames(out_dinam2.sum)),]
-
 par(mfrow=c(3,2))
 
-plot_beta<-function(x){
-ymin<-min(out_dinam2.beta[,c(x,3,7)])
-ymax<-max(out_dinam2.beta[,c(x,3,7)])
-plot(out_dinam2.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax))
-lines(out_dinam2.beta[seq(x,n,k),3],lty=2)
-lines(out_dinam2.beta[seq(x,n,k),7],lty=2)
-}
+plot_beta_dinam<-plot_beta(out.beta=out_dinam.beta)
 
-lapply(1:6,plot_beta)
+lapply(1:6,plot_beta_dinam)
+
 ```
 
 
 
+# GLM Dinámico con suavizamiento
 
+```{r GLM_Dinamico_Suavizamiento,message=FALSE, warning=FALSE, eval=TRUE, include=FALSE}
 
+source('Modelo_Dinamico_Suavizamiento.R')
 
-<!-- # GLM Dinámico con suavizamiento -->
-
-<!-- ## Definición de los datos -->
-
-<!-- ```{r} -->
-<!-- #-Defining data- -->
-<!-- data_dinam_suav <- list("n"=n,"m"=m,"y"=datos_train$WTI, "x"=select(datos_train, -WTI)) -->
-
-<!-- ``` -->
-
-<!-- ## Definición de iniciales -->
-<!-- ```{r} -->
-<!-- #-Defining inits- -->
-<!-- inits<-function(){list(alpha=rep(0,n),beta=matrix(0,k,n),tau.y=1,tau.a=1,yp=rep(1,n),yf=rep(1,m))} -->
-
-<!-- ``` -->
-
-<!-- ## selección de parámetros -->
-<!-- ```{r} -->
-<!-- #-Selecting parameters to monitor- -->
-<!-- parameters<-c("alpha","beta","tau.y","tau.a","tau.b","yp","yf") -->
-<!-- ``` -->
-
-<!-- ## Codigo JAGS -->
-<!-- ```{r} -->
-<!-- #-Running code- -->
-<!-- niter<-10000 -->
-<!-- nchains<-2 -->
-<!-- nburning<-0.1*niter -->
-
-<!-- #JAGS -->
-<!-- mod_dinam_suav.sim<-jags(data_dinam_suav,inits,parameters,model.file="mod_dinamico1_suav.txt", -->
-<!--                n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1) -->
-
-<!-- ``` -->
-
-<!-- ## Monitoreo de cadena -->
-<!-- ```{r} -->
-<!-- #Cadena -->
-<!-- #JAGS -->
-<!-- out_dinam_suav<-mod_dinam_suav.sim$BUGSoutput$sims.list -->
-
-<!-- z<-out_dinam_suav$beta[,1,1] # simulaciones de beta 1 al tiempo 1 -->
-<!-- par(mfrow=c(2,2)) -->
-<!-- plot(z,type="l") -->
-<!-- plot(cumsum(z)/(1:length(z)),type="l") -->
-<!-- hist(z,freq=FALSE) -->
-<!-- acf(z) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- #Resumen (estimadores) -->
-
-<!-- #JAGS -->
-<!-- out_dinam_suav.sum<-mod_dinam_suav.sim$BUGSoutput$summary -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- #Tabla resumen -->
-<!-- out_dinam_suav.sum.t<-out_dinam_suav.sum[grep("alpha",rownames(out_dinam_suav.sum)),c(1,3,7)] -->
-<!-- out_dinam_suav.sum.t<-cbind(out_dinam_suav.sum.t,apply(out_dinam_suav$alpha,2,prob)) -->
-<!-- dimnames(out_dinam_suav.sum.t)[[2]][4]<-"prob" -->
-<!-- print(out_dinam_suav.sum.t) -->
-
-<!-- out_dinam_suav.sum.t<-out_dinam_suav.sum[grep("beta",rownames(out_dinam_suav.sum)),c(1,3,7)] -->
-<!-- out_dinam_suav.sum.t<-cbind(out_dinam_suav.sum.t,apply(out_dinam_suav$beta,2,prob)) -->
-<!-- dimnames(out_dinam_suav.sum.t)[[2]][4]<-"prob" -->
-<!-- print(out_dinam_suav.sum.t) -->
-<!-- ``` -->
+```
 
-<!-- ```{r} -->
-<!-- #DIC -->
-<!-- out_dinam_suav.dic<-mod_dinam_suav.sim$BUGSoutput$DIC -->
-<!-- print(out_dinam_suav.dic) -->
-<!-- ``` -->
+```{r Resumen_GLM_dinam_suav,eval=FALSE, include=FALSE}
+#Tabla resumen
+out_dinam_suav.sum.t_alpha_tabla<-xtable(out_dinam_suav.sum.t_alpha,
+                              caption='Interceptos Estimados para el Modelo Dinámico con Suavizamiento',
+                              label='tabla:coef_mod_dinam_suav')
 
-<!-- ```{r} -->
-<!-- #Predictions -->
-<!-- out_dinam_suav.yp<-out_dinam_suav.sum[grep("yp",rownames(out_dinam_suav.sum)),] -->
-<!-- ymin<-min(datos_train$WTI,out_dinam_suav.yp[,c(1,3,7)]) -->
-<!-- ymax<-max(datos_train$WTI,out_dinam_suav.yp[,c(1,3,7)]) -->
-<!-- xmin<-1 -->
-<!-- xmax<-n+m -->
+align(out_dinam_suav.sum.t_alpha_tabla)<-'l|rrrrrr'
 
-<!-- # JPM_Dollar_Index vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$JPM_Dollar_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$JPM_Dollar_Index,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$JPM_Dollar_Index,out_dinam_suav.yp[,3],datos_train$JPM_Dollar_Index,out_dinam_suav.yp[,7],col=2) -->
+print(out_dinam_suav.sum.t_alpha_tabla,comment=FALSE,caption.placement = 'top')
 
-<!-- ``` -->
 
-<!-- ```{r} -->
-<!-- # VIX_Index vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$VIX_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$VIX_Index,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$VIX_Index,out_dinam_suav.yp[,3],datos_train$VIX_Index,out_dinam_suav.yp[,7],col=2) -->
+out_dinam_suav.sum.t_beta_tabla<-xtable(out_dinam_suav.sum.t_beta,
+                              caption='Coeficientes Estimados para el Modelo Dinámico con Suavizamiento',
+                              label='tabla:coef_mod_dinam_suav')
 
-<!-- ``` -->
+align(out_dinam_suav.sum.t_beta_tabla)<-'l|rrrrrr'
 
-<!-- ```{r} -->
-<!-- # OPEP_TOTPROD vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$OPEP_TOTPROD,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$OPEP_TOTPROD,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$OPEP_TOTPROD,out_dinam_suav.yp[,3],datos_train$OPEP_TOTPROD,out_dinam_suav.yp[,7],col=2) -->
+print(out_dinam_suav.sum.t_beta_tabla,comment=FALSE,caption.placement = 'top')
+```
 
-<!-- ``` -->
+```{r DIC_GLM_dinam_suav}
+#DIC
+print(out_dinam_suav.dic)
+```
 
-<!-- ```{r} -->
-<!-- # OPEP_TOTDEM vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$OPEP_TOTDEM,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$OPEP_TOTDEM,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$OPEP_TOTDEM,out_dinam_suav.yp[,3],datos_train$OPEP_TOTDEM,out_dinam_suav.yp[,7],col=2) -->
+```{r PlotRegresores_Dinam_suav,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Dinámico con Suavizamiento'}
 
-<!-- ``` -->
+#Predictions
+par(mfrow=c(3,2))
 
-<!-- ```{r} -->
-<!-- # TBILL_10YR vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$TBILL_10YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$TBILL_10YR,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$TBILL_10YR,out_dinam_suav.yp[,3],datos_train$TBILL_10YR,out_dinam_suav.yp[,7],col=2) -->
 
-<!-- ``` -->
+# JPM_Dollar_Index vs. WTI
+plot_RegvsWTI(x.name='JPM_Dollar_Index',out.yp=out_dinam_suav.yp,pos_leg='topleft')
 
-<!-- ```{r} -->
-<!-- # TBILL_1YR vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$TBILL_1YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$TBILL_1YR,out_dinam_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$TBILL_1YR,out_dinam_suav.yp[,3],datos_train$TBILL_1YR,out_dinam_suav.yp[,7],col=2) -->
+# VIX_Index vs. WTI
+plot_RegvsWTI(x.name='VIX_Index',out.yp=out_dinam_suav.yp,pos_leg='topleft')
 
-<!-- ``` -->
+# OPEP_TOTPROD vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTPROD',out.yp=out_dinam_suav.yp,pos_leg='topleft')
 
-<!-- ```{r} -->
-<!-- out_dinam_suav.yf<-out_dinam_suav.sum[grep("yf",rownames(out_dinam_suav.sum)),] -->
+# OPEP_TOTDEM vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTDEM',out.yp=out_dinam_suav.yp,pos_leg='topleft')
 
-<!-- #t vs y -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(1:(n+m),datos$WTI,type="l",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax)) -->
-<!-- lines(1:(n+m),c(out_dinam_suav.yp[,1],rep(NA,m)),col='firebrick1') -->
-<!-- lines(1:(n+m),c(rep(NA,n),out_dinam_suav.yf[,1]),col='royalblue1') -->
+# TBILL_10YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_10YR',out.yp=out_dinam_suav.yp,pos_leg='topright')
 
-<!-- ``` -->
+# TBILL_1YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_1YR',out.yp=out_dinam_suav.yp,pos_leg='topright')
 
-<!-- ```{r} -->
-<!-- #betas -->
-<!-- out_dinam_suav.beta<-out_dinam_suav.sum[grep("beta",rownames(out_dinam_suav.sum)),] -->
+```
 
-<!-- par(mfrow=c(3,2)) -->
+```{r tsWTI_Dinam_suav,fig.width=12,fig.height=6,fig.cap='Ajuste y Predicción: Modelo Dinámico con Suavizamiento'}
 
-<!-- plot_beta<-function(x){ -->
-<!-- ymin<-min(out_dinam_suav.beta[,c(x,3,7)]) -->
-<!-- ymax<-max(out_dinam_suav.beta[,c(x,3,7)]) -->
-<!-- plot(out_dinam_suav.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax)) -->
-<!-- lines(out_dinam_suav.beta[seq(x,n,k),3],lty=2) -->
-<!-- lines(out_dinam_suav.beta[seq(x,n,k),7],lty=2) -->
-<!-- } -->
+#t vs y
+par(mfrow=c(1,1))
+plot_tsWTI(out.yp=out_dinam_suav.yp,out.yf=out_dinam_suav.yf,pos_leg='topleft')
 
-<!-- lapply(1:6,plot_beta) -->
-<!-- ``` -->
+```
 
+```{r tsBetas_Dinam_suav,message=FALSE, warning=FALSE, fig.width=12,fig.height=8,fig.cap='Coeficientes Estimados: Modelo Dinámico con Suavizamiento'}
+#betas
+par(mfrow=c(3,2))
 
+plot_beta_dinam_suav<-plot_beta(out.beta=out_dinam_suav.beta)
 
+lapply(1:6,plot_beta_dinam_suav)
 
+```
 
 
+# GLM Dinámico con Intercepto Estático y Suavizamiento
 
-<!-- # GLM Dinámico con intercepto estático con suavizamiento -->
+```{r GLM_Dinamico2_suav,message=FALSE, warning=FALSE, eval=TRUE, include=FALSE}
 
-<!-- ## Definición de los datos -->
+source('Modelo_Dinamico2_Suavizamiento.R')
 
-<!-- ```{r} -->
-<!-- #-Defining data- -->
-<!-- data_dinam2_suav <- list("n"=n,"m"=m,"y"=datos_train$WTI, "x"=select(datos_train, -WTI)) -->
+```
 
-<!-- ``` -->
+```{r Resumen_GLM_dinam2_suav,eval=FALSE, include=FALSE}
 
-<!-- ## Definición de iniciales -->
-<!-- ```{r} -->
-<!-- #-Defining inits- -->
-<!-- inits<-function(){list(alpha=0,beta=matrix(0,k,n),tau.y=1,tau.b=rep(1,k),yp=rep(1,n),yf=rep(1,m))} -->
+#Tabla resumen
+out_dinam2_suav.sum.t_tabla<-xtable(out_dinam2_suav.sum.t,
+                              caption='Coeficientes Estimados para el Modelo Dinámico con Intercepto Estático y Suavizamiento',
+                              label='tabla:coef_mod_dinam2_suav')
 
-<!-- ``` -->
+align(out_dinam2_suav.sum.t_tabla)<-'l|rrrrrr'
 
-<!-- ## selección de parámetros -->
-<!-- ```{r} -->
-<!-- #-Selecting parameters to monitor- -->
-<!-- parameters<-c("alpha","beta","tau.y","tau.b","yp","yf") -->
-<!-- ``` -->
+print(out_dinam2_suav.sum.t_tabla,comment=FALSE,caption.placement = 'top')
 
-<!-- ## Codigo JAGS -->
-<!-- ```{r} -->
-<!-- #-Running code- -->
-<!-- niter<-10000 -->
-<!-- nchains<-2 -->
-<!-- nburning<-0.1*niter -->
+```
 
-<!-- #JAGS -->
-<!-- mod_dinam2_suav.sim<-jags(data_dinam2_suav,inits,parameters,model.file="mod_dinamico2.txt", -->
-<!--                n.iter=niter,n.chains=nchains,n.burnin=nburning,n.thin=1) -->
+```{r DIC_GLM_dinam2_suav}
+#DIC
+print(out_dinam2_suav.dic)
+```
 
-<!-- ``` -->
+```{r PlotRegresores_Dinam2_suav,fig.width=12,fig.height=6,fig.cap='Regresores vs WTI: Modelo Dinámico con Intercepto Estático y Suavizamiento'}
 
-<!-- ## Monitoreo de cadena -->
-<!-- ```{r} -->
-<!-- #Cadena -->
-<!-- #JAGS -->
-<!-- out_dinam2_suav<-mod_dinam2_suav.sim$BUGSoutput$sims.list -->
+#Predictions
+par(mfrow=c(3,2))
 
-<!-- z<-out_dinam2_suav$beta[,1,1] # simulaciones de beta 1 al tiempo 1 -->
-<!-- par(mfrow=c(2,2)) -->
-<!-- plot(z,type="l") -->
-<!-- plot(cumsum(z)/(1:length(z)),type="l") -->
-<!-- hist(z,freq=FALSE) -->
-<!-- acf(z) -->
 
-<!-- ``` -->
+# JPM_Dollar_Index vs. WTI
+plot_RegvsWTI(x.name='JPM_Dollar_Index',out.yp=out_dinam2_suav.yp,pos_leg='topleft')
 
-<!-- ```{r} -->
-<!-- #Resumen (estimadores) -->
+# VIX_Index vs. WTI
+plot_RegvsWTI(x.name='VIX_Index',out.yp=out_dinam2_suav.yp,pos_leg='topright')
 
-<!-- #JAGS -->
-<!-- out_dinam2_suav.sum<-mod_dinam2_suav.sim$BUGSoutput$summary -->
-<!-- ``` -->
+# OPEP_TOTPROD vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTPROD',out.yp=out_dinam2_suav.yp,pos_leg='topleft')
 
-<!-- ```{r} -->
-<!-- #Tabla resumen -->
-<!-- out_dinam2_suav.sum.t<-out_dinam2_suav.sum[grep("alpha",rownames(out_dinam2_suav.sum)),c(1,3,7)] -->
-<!-- out_dinam2_suav.sum.t<-c(out_dinam2_suav.sum.t,prob=apply(out_dinam2_suav$alpha,2,prob)) -->
-<!-- print(out_dinam2_suav.sum.t) -->
+# OPEP_TOTDEM vs. WTI
+plot_RegvsWTI(x.name='OPEP_TOTDEM',out.yp=out_dinam2_suav.yp,pos_leg='topleft')
 
-<!-- out_dinam2_suav.sum.t<-out_dinam2_suav.sum[grep("beta",rownames(out_dinam2_suav.sum)),c(1,3,7)] -->
-<!-- out_dinam2_suav.sum.t<-cbind(out_dinam2_suav.sum.t,apply(out_dinam2_suav$beta,2,prob)) -->
-<!-- dimnames(out_dinam2_suav.sum.t)[[2]][4]<-"prob" -->
-<!-- print(out_dinam2_suav.sum.t) -->
-<!-- ``` -->
+# TBILL_10YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_10YR',out.yp=out_dinam2_suav.yp,pos_leg='topright')
 
-<!-- ```{r} -->
-<!-- #DIC -->
-<!-- out_dinam2_suav.dic<-mod_dinam2_suav.sim$BUGSoutput$DIC -->
-<!-- print(out_dinam2_suav.dic) -->
-<!-- ``` -->
+# TBILL_1YR vs. WTI
+plot_RegvsWTI(x.name='TBILL_1YR',out.yp=out_dinam2_suav.yp,pos_leg='topright')
 
-<!-- ```{r} -->
-<!-- #Predictions -->
-<!-- out_dinam2_suav.yp<-out_dinam2_suav.sum[grep("yp",rownames(out_dinam2_suav.sum)),] -->
-<!-- ymin<-min(datos_train$WTI,out_dinam2_suav.yp[,c(1,3,7)]) -->
-<!-- ymax<-max(datos_train$WTI,out_dinam2_suav.yp[,c(1,3,7)]) -->
-<!-- xmin<-1 -->
-<!-- xmax<-n+m -->
+```
 
-<!-- # JPM_Dollar_Index vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$JPM_Dollar_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$JPM_Dollar_Index,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$JPM_Dollar_Index,out_dinam2_suav.yp[,3],datos_train$JPM_Dollar_Index,out_dinam2_suav.yp[,7],col=2) -->
+```{r tsWTI_Dinam2_suav,fig.width=12,fig.height=6,fig.cap='Ajuste y Predicción: Modelo Dinámico con Intercepto Estático y Suavizamiento'}
 
-<!-- ``` -->
+#t vs y
+par(mfrow=c(1,1))
+plot_tsWTI(out.yp=out_dinam2_suav.yp,out.yf=out_dinam2_suav.yf,pos_leg='topleft')
 
-<!-- ```{r} -->
-<!-- # VIX_Index vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$VIX_Index,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$VIX_Index,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$VIX_Index,out_dinam2_suav.yp[,3],datos_train$VIX_Index,out_dinam2_suav.yp[,7],col=2) -->
+```
 
-<!-- ``` -->
+```{r tsBetas_Dinam2_suav,message=FALSE, warning=FALSE,fig.width=12,fig.height=8,fig.cap='Coeficientes Estimados: Modelo Dinámico con Intercepto Estático y Suavizamiento'}
+#betas
+par(mfrow=c(3,2))
 
-<!-- ```{r} -->
-<!-- # OPEP_TOTPROD vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$OPEP_TOTPROD,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$OPEP_TOTPROD,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$OPEP_TOTPROD,out_dinam2_suav.yp[,3],datos_train$OPEP_TOTPROD,out_dinam2_suav.yp[,7],col=2) -->
+plot_beta_dinam<-plot_beta(out.beta=out_dinam.beta)
 
-<!-- ``` -->
+lapply(1:6,plot_beta_dinam)
 
-<!-- ```{r} -->
-<!-- # OPEP_TOTDEM vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$OPEP_TOTDEM,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$OPEP_TOTDEM,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$OPEP_TOTDEM,out_dinam2_suav.yp[,3],datos_train$OPEP_TOTDEM,out_dinam2_suav.yp[,7],col=2) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # TBILL_10YR vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$TBILL_10YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$TBILL_10YR,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$TBILL_10YR,out_dinam2_suav.yp[,3],datos_train$TBILL_10YR,out_dinam2_suav.yp[,7],col=2) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- # TBILL_1YR vs. WTI -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(datos_train$TBILL_1YR,datos_train$WTI,type="p",pch=16,col="grey50",ylim=c(ymin,ymax)) -->
-<!-- points(datos_train$TBILL_1YR,out_dinam2_suav.yp[,1],col=2,pch=16,cex=0.5) -->
-<!-- segments(datos_train$TBILL_1YR,out_dinam2_suav.yp[,3],datos_train$TBILL_1YR,out_dinam2_suav.yp[,7],col=2) -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- out_dinam2_suav.yf<-out_dinam2_suav.sum[grep("yf",rownames(out_dinam2_suav.sum)),] -->
-
-<!-- #t vs y -->
-<!-- par(mfrow=c(1,1)) -->
-<!-- plot(1:(n+m),datos$WTI,type="l",col="grey80",ylim=c(ymin,ymax),xlim=c(xmin,xmax)) -->
-<!-- lines(1:(n+m),c(out_dinam2_suav.yp[,1],rep(NA,m)),col='firebrick1') -->
-<!-- lines(1:(n+m),c(rep(NA,n),out_dinam2_suav.yf[,1]),col='royalblue1') -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- #betas -->
-<!-- out_dinam2_suav.beta<-out_dinam2_suav.sum[grep("beta",rownames(out_dinam2_suav.sum)),] -->
-
-<!-- par(mfrow=c(3,2)) -->
-
-<!-- plot_beta<-function(x){ -->
-<!-- ymin<-min(out_dinam2_suav.beta[,c(x,3,7)]) -->
-<!-- ymax<-max(out_dinam2_suav.beta[,c(x,3,7)]) -->
-<!-- plot(out_dinam2_suav.beta[seq(x,n,k),1],type="l",ylim=c(ymin,ymax)) -->
-<!-- lines(out_dinam2_suav.beta[seq(x,n,k),3],lty=2) -->
-<!-- lines(out_dinam2_suav.beta[seq(x,n,k),7],lty=2) -->
-<!-- } -->
-
-<!-- lapply(1:6,plot_beta) -->
-<!-- ``` -->
+```
 
 
 

@@ -50,11 +50,11 @@ datos_3_estand<-datos_3%>%
   select(Fecha,everything())
 
 # Guardaos los datos sin estandarizar
-write.csv(datos_1,'datos_1.csv',row.names=FALSE)
-write.csv(datos_2,'datos_2.csv',row.names=FALSE)
-write.csv(datos_3,'datos_3.csv',row.names=FALSE)
+write.csv(datos_1,'datos/datos_1.csv',row.names=FALSE)
+write.csv(datos_2,'datos/datos_2.csv',row.names=FALSE)
+write.csv(datos_3,'datos/datos_3.csv',row.names=FALSE)
 
 # Guardamos los datos estandarizados
-write.csv(datos_1_estand,'datos_1_estand.csv',row.names = FALSE)
-write.csv(datos_2_estand,'datos_2_estand.csv',row.names = FALSE)
-write.csv(datos_3_estand,'datos_3_estand.csv',row.names = FALSE)
+write.csv(datos_1_estand,'datos/datos_1_estand.csv',row.names = FALSE)
+write.csv(datos_2_estand,'datos/datos_2_estand.csv',row.names = FALSE)
+write.csv(datos_3_estand,'datos/datos_3_estand.csv',row.names = FALSE)

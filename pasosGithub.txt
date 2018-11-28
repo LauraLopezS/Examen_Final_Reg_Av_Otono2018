@@ -1,0 +1,500 @@
+   55  cat error.txt
+   56  ls
+   57  rm error.txt
+   58  rm gut.txt
+   59  ls
+   60  cat gut.txt 1>error.txt
+   61  cat error.txt
+   62  cat gut.txt 0>error.txt
+   63  cat error.txt
+   64  rm error.txt
+   65  rm gut.txt
+   66  ls
+   67  curl -s http:///www.gutenberg.org/files/76/76-0.txt >gut.txt 2> error.txt
+   68  cat error.txt
+   69  curl -s http:///www.gutenberg.org/files/76/76-0.txt >gut.txt12> error.txt
+   70  curl -s http:///www.gutenberg.org/files/76/76-0.txt >gut.txt 1> error.txt
+   71  cat error.txt
+   72  curl -s http:///www.gutenberg.org/files/76/76-0.txt >gut.txt 0> error.txt
+   73  cat error.txt
+   74  rm gut.txt
+   75  rm error.txt
+   76  curl http:///www.gutenberg.org/files/76/76-0.txt >gut.txt
+   77  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   78  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   79  ls
+   80  ls
+   81  cd /data
+   82  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   83  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   84  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   85  ls
+   86  ls
+   87  cd /data
+   88  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   89  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   90  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   91  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   92  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   93  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   94  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   95  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   96  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   97  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+   98  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+   99  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  100  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  101  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  102  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  103  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  104  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  105  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  106  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  107  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  108  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  109  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  110  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  111  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  112  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  113  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  114  ps
+  115  ps -al
+  116  docker images
+  117  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-lin
+  118  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  119  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  120  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  121  ps
+  122  ps -al
+  123  docker images
+  124  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-lin
+  125  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  126  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  127  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  128  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  129  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  130  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  131  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  132  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  133  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  134  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  135  exit
+  136  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  137  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  138  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  139  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  140  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  141  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  142  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  143  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  144  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  145  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  146  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  147  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  148  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  149  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  150  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  151  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  152  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  153  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  154  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  155  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  156  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  157  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  158  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  159  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  160  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  161  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  162  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Prueba1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  163  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  164  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  165  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  166  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Pregunta1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  167  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"02 Tarea2"/Prueba1:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  168  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  169  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"03 Tarea3":/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  170  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  171  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"03 Tarea3":/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  172  docker pull rocker/shiny
+  173  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  174  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  175  docker pull rocker/shiny
+  176  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  177  docker pull rocker/shiny
+  178  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"03 Tarea3":/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  179  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  180  docker ps -al
+  181  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"03 Tarea3":/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  182  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  183  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  184  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"03 Tarea3":/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  185  docker images
+  186  docker ps 
+  187  docker ps -al
+  188  docker run --rm -p 3838:3838     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct":/srv/shiny-server/     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct"/log/:/var/log/shiny-server/     rocker/shiny
+  189  docker images 
+  190  docker ps -al
+  191  docker kill elated_jang
+  192  docker ps -al
+  193  docker run -p 3838:3838     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct":/srv/shiny-server/     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct"/log/:/var/log/shiny-server/     rocker/shiny /bin/bash
+  194  exit
+  195  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  196  docker images
+  197  docker ps -al
+  198  docker kill peaceful_brown
+  199  docker start peaceful_brown
+  200  docker kill peaceful_brown
+  201  docker ps -al
+  202  docker kill peaceful_brown
+  203  docker run -it -p 3838:3838     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct":/srv/shiny-server/     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct"/log/:/var/log/shiny-server/     rocker/shiny /bin/bash
+  204  docker ps -al
+  205  docker commit f5d4b9114874
+  206  docker images
+  207  docker tag 398d97dd2828 alejandralli/Ej_rocker_shiny
+  208  docker tag 398d97dd2828 alejandralli/ej_rocker_shiny
+  209  docker login
+  210  login
+  211  docker login
+  212  doker push alejandralli/Ej_rocker_shiny
+  213  doker push alejandralli/ej_rocker_shiny
+  214  docker push alejandralli/ej_rocker_shiny
+  215  history >
+  216  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  217  docker images
+  218  docker ps -al
+  219  docker kill peaceful_brown
+  220  docker start peaceful_brown
+  221  docker kill peaceful_brown
+  222  docker ps -al
+  223  docker kill peaceful_brown
+  224  docker run -it -p 3838:3838     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct":/srv/shiny-server/     -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/"01 Ejercicios en R"/"PCA_clase12oct"/log/:/var/log/shiny-server/     rocker/shiny /bin/bash
+  225  docker ps -al
+  226  docker commit f5d4b9114874
+  227  docker images
+  228  docker tag 398d97dd2828 alejandralli/Ej_rocker_shiny
+  229  docker tag 398d97dd2828 alejandralli/ej_rocker_shiny
+  230  docker login
+  231  login
+  232  docker login
+  233  doker push alejandralli/Ej_rocker_shiny
+  234  doker push alejandralli/ej_rocker_shiny
+  235  docker push alejandralli/ej_rocker_shiny
+  236  history >
+  237  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  238  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  239  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  240  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  241  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  242  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  243  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  244  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"03 Tarea3":/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  245  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  246  docker run -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"05 Tareas"/"03 Tarea3":/data -p 9000:9000 datascienceworkshops/data-science-at-the-command-line
+  247  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  248  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  249  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"06 Notas Github"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  250  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  251  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  252  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"06 Notas Github"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  253  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  254  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"06 Notas Github"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  255  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  256  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"06 Notas Github"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  257  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  258  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  259  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"06 Notas Github"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  260  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  261  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  262  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"06 Notas Github"/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  263  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  264  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  265  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  266  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  267  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  268  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  269  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  270  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  271  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  272  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  273  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  274  docker run --rm -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"07 Examenes"/"Primer Parcial":/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  275  runApp("census-app", display.mode = "showcase")
+  276  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  277  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github/data:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-l
+  278  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  279  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  280  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  281  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  282  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  283  /Users/Alejandra/Documents/07\ Examenes/Primer\ Parcial/README ; exit;
+  284  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  285  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  286  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  287  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  288  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  289  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  290  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  291  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  292  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  293  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  294  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  295  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  296  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  297  docker run  -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data ubuntu
+  298  docker run -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/"04 Ejercicios Clase"/data:/data ubuntu
+  299  docker run -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/"04 Ejercicios Clase"/berka:/data ubuntu
+  300  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  301  docker run  -it -v /Users/Alejandra/Documents/"ITAM Maestría"/"03 Otoño 2018"/"02 Minería y Análisis de Datos"/"04 Ejercicios Clase"/data:/data ubuntu
+  302  docker run -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/"04 Ejercicios Clase"/data:/data ubuntu
+  303  docker run -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/"04 Ejercicios Clase"/berka:/data ubuntu
+  304  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  305  ocker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  306  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  307  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  308  ocker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  309  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  310  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  311  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  312  ocker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  313  cd intro-to-data-science-2018
+  314  git config --global user.name "AlejandraLLI"
+  315  git config --global user.email "alelli3@hotmail.com"
+  316  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  317  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  318  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  319  ocker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  320  cd intro-to-data-science-2018
+  321  git config --global user.name "AlejandraLLI"
+  322  git config --global user.email "alelli3@hotmail.com"
+  323  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  324  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  325  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  326  git config --global user.name "AlejandraLLI"
+  327  git config --global user.email "alelli3@hotmail.com"
+  328  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  329  docker pull continuumio/anaconda:4.0.0 /bin/bash
+  330  docker pull continuumio/anaconda:4.0.0
+  331  python -- veersion
+  332  python -- version
+  333  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  334  docker images
+  335  docker ps -al
+  336  docker kill focused_mirzakhani
+  337  docker rm focused_mirzakhani
+  338  docker ps -al
+  339  docker images
+  340  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  341  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  342  docker images
+  343  docker ps -al
+  344  start goofy_euclid
+  345  docker start goofy_euclid
+  346  docker run  goofy_euclid
+  347  docker ps -al
+  348  docker rm goofy_euclid
+  349  docker kill goofy_euclid
+  350  docker ps -al
+  351  docker rm goofy_euclid
+  352  docker ps -al
+  353  docker rm eager_raman
+  354  docker ps -al
+  355  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  356  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  357  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  358  git config --global user.name "AlejandraLLI"
+  359  git config --global user.email "alelli3@hotmail.com"
+  360  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  361  docker pull continuumio/anaconda:4.0.0 /bin/bash
+  362  docker pull continuumio/anaconda:4.0.0
+  363  python -- veersion
+  364  python -- version
+  365  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  366  docker images
+  367  docker ps -al
+  368  docker kill focused_mirzakhani
+  369  docker rm focused_mirzakhani
+  370  docker ps -al
+  371  docker images
+  372  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  373  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  374  docker images
+  375  docker ps -al
+  376  start goofy_euclid
+  377  docker start goofy_euclid
+  378  docker run  goofy_euclid
+  379  docker ps -al
+  380  docker rm goofy_euclid
+  381  docker kill goofy_euclid
+  382  docker ps -al
+  383  docker rm goofy_euclid
+  384  docker ps -al
+  385  docker rm eager_raman
+  386  docker ps -al
+  387  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  388  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  389  docker run -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/"05 Tareas"/"05 Tarea5"/data/berka:/data ubuntu # Aparece un gato, eso significa que el usuario está haciendo ls cosas como raíz
+  390  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  391  docker run -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/"05 Tareas"/"05 Tarea5"/data/berka:/data ubuntu # Aparece un gato, eso significa que el usuario está haciendo ls cosas como raíz
+  392  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  393  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  394  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  395  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  396  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  397  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  398  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  399  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  400  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  401  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  402  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  403  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  404  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  405  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  406  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  407  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  408  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  409  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  410  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  411  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  412  git config --global user.name "AlejandraLLI"
+  413  git config --global user.email "alelli3@hotmail.com"
+  414  git config --global color.ui "auto"
+  415  git config --global core.editor "vi" #emacs
+  416  git clone https://github.com/AlejandraLLI/intro-to-data-science-2018.git
+  417  docker images
+  418  docker ps -al
+  419  rm epic_beaver
+  420  docker rm epic_beaver
+  421  docker kill epic_beaver
+  422  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  423  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  424  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  425  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  426  git config --global user.name "AlejandraLLI"
+  427  git config --global user.email "alelli3@hotmail.com"
+  428  git config --global color.ui "auto"
+  429  git config --global core.editor "vi" #emacs
+  430  git clone https://github.com/AlejandraLLI/intro-to-data-science-2018.git
+  431  docker images
+  432  docker ps -al
+  433  rm epic_beaver
+  434  docker rm epic_beaver
+  435  docker kill epic_beaver
+  436  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  437  docker run --rm -it -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/06_Notas_Github:/data -p 8000:8000 datascienceworkshops/data-science-at-the-command-line
+  438  docker ps -al
+  439  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  440  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  441  docker images
+  442  docker ps -al
+  443  docker start vigorous_jones
+  444  jupyter notebook --ip=0.0.0.0 --port=8888 --allow-root
+  445  python
+  446  python -m pip install --upgrade pip
+  447  python -m pip install jupyter
+  448  docker ps -l
+  449  docker ps -al
+  450  docker run vigorous_jones
+  451  exit 
+  452  python
+  453  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  454  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  455  docker ps -al
+  456  docker kill youthful_beaver 
+  457  docker rm  youthful_beaver 
+  458  docker ps -al
+  459  docker kill  youthful_beaver 
+  460  docker rm  youthful_beaver 
+  461  docker kill vogorous_jones
+  462  docker kill vigorous_jones
+  463  docker ps -al
+  464  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  465  docker ps -al
+  466  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  467  docker ps -al
+  468  rm(hardcore_hypatia
+  469  rm hardcore_hypatia
+  470  docker rm hardcore_hypatia
+  471  docker ps -al
+  472  docker rm sleepy_mahavira
+  473  docker ps -al
+  474  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  475  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  476  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  477  docker ps -al
+  478  docker kill youthful_beaver 
+  479  docker rm  youthful_beaver 
+  480  docker ps -al
+  481  docker kill  youthful_beaver 
+  482  docker rm  youthful_beaver 
+  483  docker kill vogorous_jones
+  484  docker kill vigorous_jones
+  485  docker ps -al
+  486  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  487  docker ps -al
+  488  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  489  docker ps -al
+  490  rm(hardcore_hypatia
+  491  rm hardcore_hypatia
+  492  docker rm hardcore_hypatia
+  493  docker ps -al
+  494  docker rm sleepy_mahavira
+  495  docker ps -al
+  496  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase':/data continuumio/anaconda:4.0.0 /bin/bash
+  497  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  498  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase'/'Clase Modelos Python':/data continuumio/anaconda:4.0.0 /bin/bash
+  499  bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh'
+  500  docker run -p 8888:8888 -i -t -v /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/02_Mineria_y_Analisis_de_Datos/'04 Ejercicios Clase'/'Clase Modelos Python':/data continuumio/anaconda:4.0.0 /bin/bash
+  501  cd /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda
+  502  ls
+  503  cd `05 Proyecto Final`
+  504  cd /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzdals
+  505  ls
+  506  cd /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05_Proyecto_Final
+  507  ls
+  508  git config --global user.name "AlejandraLLI"
+  509  git config --global user.email "alelli3@hotmail.com"
+  510  git config --global color.ui "auto"
+  511  git config --global core.editor "vi" #emacs
+  512  git status
+  513  ls
+  514  cd .. 
+  515  git status
+  516  cd /Users/Alejandra/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05_Proyecto_Final
+  517  ls
+  518  git status
+  519  git status
+  520  cd ..
+  521  ls
+  522  cd 05_Proyecto_Final
+  523  git status
+  524  cd ..
+  525  ls
+  526  git add 05_Proyecto_Final
+  527  git status
+  528  git commit -m 'Agregando Proyecto Final Reg. Avanzada'
+  529  git remote add origin https://github.com/AlejandraLLI/Examen_Final_Reg_Av_Otono2018.git
+  530  git push origin master
+  531  git pull
+  532  git pull origin master
+  533  ls
+  534  cd 05_Proyecto_Final
+  535  ls 
+  536  git status
+  537  git init
+  538  git remote add origin https://github.com/AlejandraLLI/Examen_Final_Reg_Av_Otono2018.git
+  539  git pull
+  540  git pull origin master
+  541  git status
+  542  git add
+  543  git add .
+  544  git status
+  545  git commit -m 'Agregando Examen Final Reg Avanzada'
+  546  git push origin master
+  547  git status
+  548  git add proyecto_regresion.Rmd
+  549  git status
+  550  git commit -m 'prueba'
+  551  git push origin master
+  552  history
+  553  histoyr > pasosGithub.txt
+  554  history > pasosGithub.txt
