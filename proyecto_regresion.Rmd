@@ -19,8 +19,15 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r setWD}
-# setwd("~/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05 Proyecto Final")
-setwd("//client/E$/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzada/05_Proyecto_Final")
+# Ruta ALE
+setwd("~/Documents/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzda/05_Proyecto_Final")
+
+# Ruta Banxico
+# setwd("//client/E$/ITAM_Maestria/03_Otono_2018/01_Regresion_Avanzada/05_Proyecto_Final")
+
+# Ruta Laura
+
+# Ruta Dante
 ```
 
 ```{r librerias,message=FALSE, warning=FALSE}
@@ -239,7 +246,7 @@ plot_ts_datos('WTI','firebrick1','West Texas Intermediate','Dólares por barril'
 
 ```
 
-```{r PlotsRegresores,fig.pos='H',fig.width=12,fig.height=12,fig.cap='Serie de Tiempo del precio del West Texas Intermediate'}
+```{r PlotsRegresores,fig.pos='H',fig.width=12,fig.height=12,fig.cap='Serie de Tiempo de los Regresores'}
 
 par(mfrow=c(3,2))
 
