@@ -8,13 +8,13 @@ nburning<-0.1*niter
 semilla<-3567
 
 #-Defining data-
-data_estat <- list("n"=n,"m"=m,"y"=datos_train$WTI, "x"=select(datos_train, -WTI))
+data_estat <- list("n"=n,"m"=m,"y"=c(datos$WTI[1:(n-3)],rep(NA,m)), "x"=select(datos, -WTI))
 
 #-Defining inits-
-inits<-function(){list(alpha=0,beta=rep(0,k),tau=1,yp=rep(1,n),yf=rep(1,m))}
+inits<-function(){list(alpha=0,beta=rep(0,k),tau=1,yp=rep(1,n))}
 
 #-Selecting parameters to monitor-
-parameters<-c("alpha","beta","tau","yp","yf")
+parameters<-c("alpha","beta","tau","yp")
 
 
 #-Running code in JAGS-
@@ -60,6 +60,3 @@ out_estat.dic<-mod_estat.sim$BUGSoutput$DIC
 
 #-Predictions-
 out_estat.yp<-out_estat.sum[grep("yp",rownames(out_estat.sum)),]
-
-#-Forecast-
-out_estat.yf<-out_estat.sum[grep("yf",rownames(out_estat.sum)),]
